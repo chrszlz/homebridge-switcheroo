@@ -1,8 +1,8 @@
 {
   "name": "homebridge-switcheroo",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "author": "Chris Zelazo",
-  "description": "Simple HTTP switches for Homebridge - Stateful, Stateless, Radio/Multi Switch",
+  "description": "Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch",
   "license": "MIT",
   "homepage": "https://github.com/chriszelazo/homebridge-switcheroo#readme",
   "repository": {

@@ -13,14 +13,14 @@ module.exports = function (homebridge) {
 function Switcheroo(log, config) {
     this.log = log;
 
-    this.name            = config.name            || 'Switcheroo Switch';
-    this.switchType      = config.service;           
+    this.name            = config.name             || 'Switcheroo Switch';
+    this.switchType      = config.switch_type;           
     this.baseUrl         = config.base_url;
-    this.httpMethod      = config.http_method     || 'GET';
+    this.httpMethod      = config.http_method      || 'GET';
 
-    this.username        = config.username        || '';
-    this.password        = config.password        || '';
-    this.sendImmediately = config.sendimmediately || '';
+    this.username        = config.username         || '';
+    this.password        = config.password         || '';
+    this.sendImmediately = config.send_immediately || '';
 
     switch (this.switchType) {
         case 'Switch':
@@ -58,36 +58,11 @@ Switcheroo.prototype = {
         });
     },
 
-    // getPowerState: function (callback) {
-    //     self = this;
-    //     request(this.http_method, url, function(error, response, responseBody) {
-    //         if (error) {
-    //             this.log('HTTP get power function failed: %s', error.message);
-    //             callback(error);
-    //         } else {
-    //             this.log('HTTP get power function succeeded!');
-    //             var info = JSON.parse(response.body);
-    //             this.log(response.body);
-    //             this.log(info);
-
-    //             var binaryState = parseInt(responseBody);
-    //             this.log('Power state is currently %s', binaryState);
-    //             var isPowerOn = binaryState > 0;
-    //             callback(null, isPowerOn);
-    //         }
-    //     }.bind(this));
-    // },
-
-    // TODO: Actually write this
-    // getPowerState: function (callback) {
-    //     callback(null, false);
-    // },
-
     setPowerState: function(targetService, powerState, callback, context) {
         var funcContext = 'fromSetPowerState';
         var reqUrl = '', reqBody = '';
 
-        // Callback s.o. safety
+        // Callback safety
         if (context == funcContext) {
             if (callback) {
                 callback();
@@ -109,19 +84,14 @@ Switcheroo.prototype = {
                 break;
 
             case 'Multiswitch':
-                this.log('switching to input: ' + targetService.subtype);
-
                 this.services.forEach(function (switchService, idx) {
-                    // if (idx === 0) {
-                    //     // Don't check the informationService which is at idx=0
-                    //     return;
-                    // }
-
-                    this.log('  [' + (idx + 1) + '] - ' + switchService.subtype);
+                    if (idx === 0) {
+                        // Don't check the informationService which is at idx=0
+                        return;
+                    }
 
                     if (targetService.subtype === switchService.subtype) {
-                        reqUrl = '' + this.baseUrl + '/%s', (idx + 1);
-                        this.log.warn('setPowerState if: ' + reqUrl); 
+                        reqUrl = this.baseUrl + '/' + idx;
                     } else {
                         switchService.getCharacteristic(Characteristic.On).setValue(false, undefined, funcContext);
                     }
@@ -132,8 +102,6 @@ Switcheroo.prototype = {
                 this.log('Unknown homebridge-switcheroo type in setPowerState');
         }
 
-        this.log('request url: ' + reqUrl);
-
         this.httpRequest(reqUrl, reqBody, this.httpMethod, this.username, this.password, this.sendImmediately, function(error, response, responseBody) {
             if (error) {
                 this.log.error('setPowerState failed: ' + error.message);
@@ -143,10 +111,10 @@ Switcheroo.prototype = {
             } else {
                 switch (this.switchType) {
                     case 'Switch':
-                        this.log.info('power_state: ' + powerState);
+                        this.log.info('==> ' + (powerState ? "On" : "Off"));
                         break;
                     case 'Multiswitch':
-                        this.log.info('input: ' + targetService.subtype);
+                        this.log('==> ' + targetService.subtype);
                         break;
                     default:
                         this.log.error('Unknown switchType in request callback');
@@ -158,18 +126,18 @@ Switcheroo.prototype = {
     },
 
     identify: function (callback) {
-        this.log('Identify requested!');
+        this.log('Identify me Senpai!');
         callback();
     },
 
     getServices: function () {
         this.services = [];
 
-        // var informationService = new Service.AccessoryInformation();
-        // informationService
-        //     .setCharacteristic(Characteristic.Manufacturer, 'E-SDS')
-        //     .setCharacteristic(Characteristic.Model, 'UHD 5x1 HDMI Switch');
-        // this.services.push(informationService);
+        var informationService = new Service.AccessoryInformation();
+        informationService
+            .setCharacteristic(Characteristic.Manufacturer, 'Switcheroo')
+            .setCharacteristic(Characteristic.Model, 'Switcheroo');
+        this.services.push(informationService);
 
         switch (this.switchType) {
             case 'Switch':
@@ -178,7 +146,6 @@ Switcheroo.prototype = {
                 var switchService = new Service.Switch(this.name);
                 switchService
                     .getCharacteristic(Characteristic.On)
-                    // .on('get', this.getPowerState.bind(this))
                     .on('set', this.setPowerState.bind(this, switchService));
 
                 this.services.push(switchService);
