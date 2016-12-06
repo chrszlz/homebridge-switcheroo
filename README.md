@@ -1,5 +1,6 @@
 # homebridge-switcheroo
 [![npm version](https://badge.fury.io/js/homebridge-switcheroo.svg)](https://badge.fury.io/js/homebridge-switcheroo)
+
 Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch switches
 
 ## Switch Services
