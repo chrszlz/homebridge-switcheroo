@@ -1,6 +1,6 @@
 {
   "name": "homebridge-switcheroo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Chris Zelazo",
   "description": "Simple HTTP switches for Homebridge - Stateful, Stateless, Radio/Multi Switch",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "homebridge": ">=0.2.0"
   },
   "dependencies": {
-    "sync-request": "^2.1.0"
+    "request": "^2.65.0"
   },
   "bugs": {
     "url": "https://github.com/chriszelazo/homebridge-switcheroo/issues"
