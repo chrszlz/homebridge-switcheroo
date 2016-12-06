@@ -2,11 +2,11 @@
 
 Simple HTTP switches for Homebridge - Stateful, Stateless, Radio/Multi Switch
 
-# Installation
+## Installation
 
 1. Install homebridge using: `npm install -g homebridge`
 2. Install homebridge-http using: `npm install -g homebridge-switcheroo`
-3. Update your configuration file. 
+3. Update your config file
 
 ##Configuration samples:
 
