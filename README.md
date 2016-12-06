@@ -4,7 +4,7 @@ Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch swi
 
 ## Switch Services
 
-### Switch (standard on/off)
+### Switch (Standard on/off)
 Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 
 ```
@@ -43,7 +43,7 @@ Multiswitch appends the index number of the switch defined below to complete the
 ## Configuration Params
 
 |             Parameter            |                       Description                       | Required |
-|:--------------------------------:|:-------------------------------------------------------:|:--------:|
+| -------------------------------- | ------------------------------------------------------- |:--------:|
 | `name`                           | name of the accessory                                   |          |
 | `switch_type`                    | `Switch` or `Multiswitch`                               |     ✓    |
 | `base_url`                       | url endpoint for whatever is receiving these requests   |     ✓    |
@@ -59,7 +59,7 @@ Multiswitch appends the index number of the switch defined below to complete the
 
 ## Help
 
-  - Make sure specify a port in the if necessary. (i.e. `\"base_url\" : \"http://192.168.0.XXX:2000\"`)
+  - Make sure specify a port in the if necessary. (i.e. `"base_url" : "http://192.168.0.XXX:2000"`)
   - Verify the correct `http_method` is begin used. Switcheroo defaults to `GET`
 
 ## Installation
