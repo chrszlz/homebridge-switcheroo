@@ -1,11 +1,10 @@
 {
   "name": "homebridge-switcheroo",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "author": "Chris Zelazo",
   "description": "Simple HTTP switches for Homebridge - Stateful, Stateless, Radio/Multi Switch",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "license": "MIT",
+  "homepage": "https://github.com/chriszelazo/homebridge-switcheroo#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chriszelazo/homebridge-switcheroo.git"
@@ -15,10 +14,11 @@
     "switch",
     "radio"
   ],
-  "author": "Chris Zelazo",
-  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "sync-request": "^2.1.0"
+  },
   "bugs": {
     "url": "https://github.com/chriszelazo/homebridge-switcheroo/issues"
-  },
-  "homepage": "https://github.com/chriszelazo/homebridge-switcheroo#readme"
+  }
 }

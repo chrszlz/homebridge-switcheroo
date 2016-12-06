@@ -163,14 +163,13 @@ Switcheroo.prototype = {
 
         var informationService = new Service.AccessoryInformation();
         informationService
-                .setCharacteristic(Characteristic.Manufacturer, "E-SDS")
-                .setCharacteristic(Characteristic.Model, "UHD 5x1 HDMI Switch");
+            .setCharacteristic(Characteristic.Manufacturer, "E-SDS")
+            .setCharacteristic(Characteristic.Model, "UHD 5x1 HDMI Switch");
         this.services.push(informationService);
 
         switch (this.accessoryType) {
             case "Switch":
                 this.log("Initializing switch: " + this.name);
-
 
                 var switchService = new Service.Switch(this.name);
                 switchService
@@ -193,8 +192,9 @@ Switcheroo.prototype = {
                     // Bind a copy of the setPowerState function that sets "this" to the accessory and the first parameter
                     // to the particular service that it is being called for. 
                     var boundSetPowerState = this.setPowerState.bind(this, switchService);
-                    switchService.getCharacteristic(Characteristic.On)
-                    .on('set', boundSetPowerState);
+                    switchService
+                        .getCharacteristic(Characteristic.On)
+                        .on('set', boundSetPowerState);
 
                     this.services.push(switchService);
                 }
