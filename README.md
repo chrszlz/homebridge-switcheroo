@@ -5,7 +5,7 @@ Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch swi
 
 ## Switch Services
 
-### Switch (Standard on/off)
+### Switch (standard on/off)
 Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 
 ```
@@ -20,7 +20,7 @@ Meant to be used as a standard on/off switch. Light, projector, fan, etc.
 }
 ```
 
-### Multiswitch (Radio buttons)
+### Multiswitch (radio buttons)
 Meant to be used as a switcher, where only one input is ever on.
 
 Multiswitch appends the index number of the switch defined below to complete the path. For example, when `Chromecast` is selected, the url generated will be `http://192.168.0.XXX/switcher/input/3` (1-based numbering). 
@@ -64,6 +64,7 @@ Multiswitch appends the index number of the switch defined below to complete the
   - Verify the correct `http_method` is begin used. Switcheroo defaults to `GET`
 
 ## Installation
+Read about an example Raspberry Pi + Homebridge setup guide with this package [here](https://github.com/chriszelazo/Apartment-Homebridge-Setup).
 
 1. Install homebridge using: `npm install -g homebridge`
 2. Install homebridge-http using: `npm install -g homebridge-switcheroo`
