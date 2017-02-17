@@ -29,8 +29,8 @@ function Switcheroo(log, config) {
         case 'Switch':
             this.onUrl   = this.host + config.on;
             this.offUrl  = this.host + config.off;
-            this.onBody  = config.on_body  || '';
-            this.offBody = config.off_body || '';
+            this.onBody  = config.on_body          || '';
+            this.offBody = config.off_body         || '';
             break;
 
         case 'Multiswitch':
@@ -62,15 +62,12 @@ Switcheroo.prototype = {
     },
 
     setPowerState: function(targetService, powerState, callback, context) {
-        var funcContext = 'fromSetPowerState';
+        let funcContext = 'fromSetPowerState';
         var reqUrl = '', reqBody = '';
 
         // Callback safety
         if (context == funcContext) {
-            if (callback) {
-                callback();
-            }
-
+            if (callback) callback();
             return;
         }
 
@@ -84,18 +81,17 @@ Switcheroo.prototype = {
 
                 reqUrl  = powerState ? this.onUrl  : this.offUrl;
                 reqBody = powerState ? this.onBody : this.offBody;
+
                 break;
 
             case 'Multiswitch':
-                this.services.forEach(function (switchService, idx) {
-                    if (idx === 0) {
-                        // Don't check the informationService which is at idx=0
-                        return;
-                    }
+                this.services.forEach(function (switchService, i) {
+                    if (i === 0) return; // skip informationService at index 0
 
-                    if (targetService.subtype === switchService.subtype) {
-                        reqUrl = this.host + '/' + idx;
-                    } else {
+                    if (targetService.subtype === switchService.subtype) { // turn on
+                        reqUrl = this.host + this.multiswitch[i-1].path;
+                        switchService.getCharacteristic(Characteristic.On).setValue(true, undefined, funcContext);
+                    } else { // turn off
                         switchService.getCharacteristic(Characteristic.On).setValue(false, undefined, funcContext);
                     }
                 }.bind(this));
@@ -136,7 +132,7 @@ Switcheroo.prototype = {
     getServices: function () {
         this.services = [];
 
-        var informationService = new Service.AccessoryInformation();
+        let informationService = new Service.AccessoryInformation();
         informationService
             .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
             .setCharacteristic(Characteristic.Model, this.model);
@@ -144,9 +140,9 @@ Switcheroo.prototype = {
 
         switch (this.type) {
             case 'Switch':
-                this.log('(switch)');
+                this.log.warn('[Switch]: ' + this.name);
 
-                var switchService = new Service.Switch(this.name);
+                let switchService = new Service.Switch(this.name);
                 switchService
                     .getCharacteristic(Characteristic.On)
                     .on('set', this.setPowerState.bind(this, switchService));
@@ -155,31 +151,29 @@ Switcheroo.prototype = {
 
                 break;
             case 'Multiswitch':
-                this.log('(multiswitch)');
-
-                for (var i = 0; i < this.multiswitch.length; i++) {
-                    var switchName = this.multiswitch[i];
-
+                this.log.warn('[Multiswitch]: ' + this.name);
+ 
+                this.multiswitch.forEach(function(switchItem, i) {
                     switch(i) {
                         case 0:
-                            this.log.warn('---+--- ' + switchName); break;
+                            this.log.warn('---+--- ' + switchItem.name); break;
                         case this.multiswitch.length-1:
-                            this.log.warn('   +--- ' + switchName); break;
+                            this.log.warn('   +--- ' + switchItem.name); break;
                         default:
-                            this.log.warn('   |--- ' + switchName);
+                            this.log.warn('   |--- ' + switchItem.name);
                     }
 
-                    var switchService = new Service.Switch(switchName, switchName);
+                    let switchService = new Service.Switch(switchItem.name, switchItem.name);
 
                     // Bind a copy of the setPowerState function that sets 'this' to the accessory and the first parameter
                     // to the particular service that it is being called for. 
-                    var boundSetPowerState = this.setPowerState.bind(this, switchService);
+                    let boundSetPowerState = this.setPowerState.bind(this, switchService);
                     switchService
                         .getCharacteristic(Characteristic.On)
                         .on('set', boundSetPowerState);
 
                     this.services.push(switchService);
-                }
+                }.bind(this));
 
                 break;
             default:
