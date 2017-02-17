@@ -14,18 +14,21 @@ function Switcheroo(log, config) {
     this.log = log;
 
     this.name            = config.name             || 'Switcheroo Switch';
-    this.switchType      = config.switch_type;           
-    this.baseUrl         = config.base_url;
+    this.type            = config.type;           
+    
+    this.host            = config.host;
     this.httpMethod      = config.http_method      || 'GET';
-
     this.username        = config.username         || '';
     this.password        = config.password         || '';
     this.sendImmediately = config.send_immediately || '';
 
-    switch (this.switchType) {
+    this.manufacturer    = config.manufacturer     || 'Switcheroo';
+    this.model           = config.model            || 'Switcheroo';
+
+    switch (this.type) {
         case 'Switch':
-            this.onUrl   = this.baseUrl + config.on_url;
-            this.offUrl  = this.baseUrl + config.off_url;
+            this.onUrl   = this.host + config.on;
+            this.offUrl  = this.host + config.off;
             this.onBody  = config.on_body  || '';
             this.offBody = config.off_body || '';
             break;
@@ -71,7 +74,7 @@ Switcheroo.prototype = {
             return;
         }
 
-        switch(this.switchType) {
+        switch(this.type) {
             case 'Switch':
                 if (!this.onUrl || !this.offUrl) {
                     this.log.warn('Ignoring request; No power state urls defined.');
@@ -91,7 +94,7 @@ Switcheroo.prototype = {
                     }
 
                     if (targetService.subtype === switchService.subtype) {
-                        reqUrl = this.baseUrl + '/' + idx;
+                        reqUrl = this.host + '/' + idx;
                     } else {
                         switchService.getCharacteristic(Characteristic.On).setValue(false, undefined, funcContext);
                     }
@@ -109,7 +112,7 @@ Switcheroo.prototype = {
             
                 callback(error);
             } else {
-                switch (this.switchType) {
+                switch (this.type) {
                     case 'Switch':
                         this.log.info('==> ' + (powerState ? "On" : "Off"));
                         break;
@@ -117,7 +120,7 @@ Switcheroo.prototype = {
                         this.log('==> ' + targetService.subtype);
                         break;
                     default:
-                        this.log.error('Unknown switchType in request callback');
+                        this.log.error('Unknown type in request callback');
                 }
 
                 callback();
@@ -135,11 +138,11 @@ Switcheroo.prototype = {
 
         var informationService = new Service.AccessoryInformation();
         informationService
-            .setCharacteristic(Characteristic.Manufacturer, 'Switcheroo')
-            .setCharacteristic(Characteristic.Model, 'Switcheroo');
+            .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+            .setCharacteristic(Characteristic.Model, this.model);
         this.services.push(informationService);
 
-        switch (this.switchType) {
+        switch (this.type) {
             case 'Switch':
                 this.log('(switch)');
 
