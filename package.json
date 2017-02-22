@@ -1,8 +1,8 @@
 {
   "name": "homebridge-switcheroo",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "author": "Chris Zelazo",
-  "description": "Simple HTTP switches for Homebridge - stateful and radio-button/multi-switch",
+  "description": "User defined switches for http requests. Simple on/off or multiswitch radio buttons. Useful for lights, A/V systems, home automation, whatever",
   "license": "MIT",
   "homepage": "https://github.com/chriszelazo/homebridge-switcheroo#readme",
   "repository": {
@@ -12,7 +12,13 @@
   "keywords": [
     "homebridge-plugin",
     "switch",
-    "radio"
+    "multiswitch",
+    "radio",
+    "button",
+    "http",
+    "control",
+    "homekit", 
+    "smarthome"
   ],
   "main": "index.js",
   "engines": {
