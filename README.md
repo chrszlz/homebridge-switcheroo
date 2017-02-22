@@ -91,10 +91,10 @@ Read about an example Raspberry Pi + Homebridge setup guide with this package [h
  - `manufacturer`, `model` params
 
 ### Renamed
- - 'switch_type' -> 'type'
- - 'Switch'      -> 'switch'
- - 'Multiswitch' -> 'multiswitch'
- - 'base_url'    -> 'host'
- - 'on_url'      -> 'on'
- - 'off_url'     -> 'off'
+ - `switch_type` -> `type`
+ - `Switch`      -> `switch`
+ - `Multiswitch` -> `multiswitch`
+ - `base_url`    -> `host`
+ - `on_url`      -> `on`
+ - `off_url`     -> `off`
 
