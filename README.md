@@ -15,7 +15,7 @@ Meant to be used as a simple on/off switch.
         "accessory": "Switcheroo",   // remember this *must* be 'Switcheroo'
         "type": "switch",
         "name": "Kitchen Light",
-        "host": "192.168.0.XXX/kitchen",
+        "host": "http://192.168.0.XXX/kitchen",
         "on"  : "/light/on",
         "off" : "/light/off"
 }
@@ -32,7 +32,7 @@ Currently only built to support one http method per switch service, meaning, all
     "accessory": "Switcheroo",
     "type": "multiswitch",
     "name": "My HDMI Switcher",
-    "host": "192.168.0.10X:8080",   // don't forget to specify a port, if necessary
+    "host": "http://192.168.0.10X:8080",   // don't forget to specify a port, if necessary
     "multiswitch": [
        { "name" : "Apple TV"     , "path" : "/switcher/appletv" },
        { "name" : "HDMI"         , "path" : "/switcher/aux"     },
@@ -74,6 +74,7 @@ Running `homebridge` manually will allow you to see the Switcheroo console logs.
 
   - Run Homebridge on startup and have it restart if crashed, [read my notes](https://github.com/chriszelazo/Apartment-Homebridge-Setup#auto-restart-homebridge-after-a-crash)
   - Make sure specify a port in the if necessary. (i.e. `"base_url" : "http://192.168.0.XXX:2000"`)
+  - Must prepend 'http://' to your host
   - Verify the correct `http_method` is begin used. Switcheroo defaults to `GET`
 
 ## Installation
