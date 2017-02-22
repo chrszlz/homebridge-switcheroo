@@ -16,7 +16,7 @@ function Switcheroo(log, config) {
     this.name            = config.name             || 'Switcheroo Switch';
     this.type            = config.type;           
     
-    this.host            = config.host;
+    this.host            = config.host             || '';
     this.httpMethod      = config.http_method      || 'GET';
     this.username        = config.username         || '';
     this.password        = config.password         || '';
@@ -26,14 +26,14 @@ function Switcheroo(log, config) {
     this.model           = config.model            || 'Switcheroo';
 
     switch (this.type) {
-        case 'Switch':
+        case 'switch':
             this.onUrl   = this.host + config.on;
             this.offUrl  = this.host + config.off;
             this.onBody  = config.on_body          || '';
             this.offBody = config.off_body         || '';
             break;
 
-        case 'Multiswitch':
+        case 'multiswitch':
             this.multiswitch = config.multiswitch;
             break;
 
@@ -65,14 +65,13 @@ Switcheroo.prototype = {
         let funcContext = 'fromSetPowerState';
         var reqUrl = '', reqBody = '';
 
-        // Callback safety
-        if (context == funcContext) {
+        if (context == funcContext) { // callback safety
             if (callback) callback();
             return;
         }
 
         switch(this.type) {
-            case 'Switch':
+            case 'switch':
                 if (!this.onUrl || !this.offUrl) {
                     this.log.warn('Ignoring request; No power state urls defined.');
                     callback(new Error('No power state urls defined.'));
@@ -84,7 +83,7 @@ Switcheroo.prototype = {
 
                 break;
 
-            case 'Multiswitch':
+            case 'multiswitch':
                 this.services.forEach(function (switchService, i) {
                     if (i === 0) return; // skip informationService at index 0
 
@@ -109,10 +108,10 @@ Switcheroo.prototype = {
                 callback(error);
             } else {
                 switch (this.type) {
-                    case 'Switch':
+                    case 'switch':
                         this.log.info('==> ' + (powerState ? "On" : "Off"));
                         break;
-                    case 'Multiswitch':
+                    case 'multiswitch':
                         this.log('==> ' + targetService.subtype);
                         break;
                     default:
@@ -139,7 +138,7 @@ Switcheroo.prototype = {
         this.services.push(informationService);
 
         switch (this.type) {
-            case 'Switch':
+            case 'switch':
                 this.log.warn('[Switch]: ' + this.name);
 
                 let switchService = new Service.Switch(this.name);
@@ -150,7 +149,7 @@ Switcheroo.prototype = {
                 this.services.push(switchService);
 
                 break;
-            case 'Multiswitch':
+            case 'multiswitch':
                 this.log.warn('[Multiswitch]: ' + this.name);
  
                 this.multiswitch.forEach(function(switchItem, i) {
