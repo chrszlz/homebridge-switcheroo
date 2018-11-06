@@ -35,6 +35,7 @@ function Switcheroo(log, config) {
 
         case 'multiswitch':
             this.multiswitch = config.multiswitch;
+            this.off_path = config.off_path;
             break;
 
         default:
@@ -88,7 +89,7 @@ Switcheroo.prototype = {
                     if (i === 0) return; // skip informationService at index 0
 
                     if (targetService.subtype === switchService.subtype) { // turn on
-                        reqUrl = this.host + this.multiswitch[i-1].path;
+                        reqUrl  = (this.off_path !== undefined && powerState) ? this.host + this.multiswitch[i-1].path : this.host + this.off_path;
                         switchService.getCharacteristic(Characteristic.On).setValue(true, undefined, funcContext);
                     } else { // turn off
                         switchService.getCharacteristic(Characteristic.On).setValue(false, undefined, funcContext);
