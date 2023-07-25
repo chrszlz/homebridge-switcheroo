@@ -24,6 +24,7 @@ function Switcheroo(log, config) {
 
     this.manufacturer    = config.manufacturer     || 'Switcheroo';
     this.model           = config.model            || 'Switcheroo';
+    this.serialNumber    = config.serialNumber     || 'SWITCH01';
 
     switch (this.type) {
         case 'switch':
@@ -135,6 +136,7 @@ Switcheroo.prototype = {
         let informationService = new Service.AccessoryInformation();
         informationService
             .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+            .setCharacteristic(Characteristic.SerialNumber, this.serialNumber)
             .setCharacteristic(Characteristic.Model, this.model);
         this.services.push(informationService);
 
