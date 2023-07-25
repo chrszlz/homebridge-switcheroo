@@ -15,6 +15,7 @@ Meant to be used as a simple on/off switch.
         "accessory": "Switcheroo",   // remember this *must* be 'Switcheroo'
         "type": "switch",
         "name": "Kitchen Light",
+        "serialNumber": "SWITCH01",
         "host": "http://192.168.0.XXX/kitchen",
         "on"  : "/light/on",
         "off" : "/light/off"
@@ -32,6 +33,7 @@ Currently only built to support one http method per switch service, meaning, all
     "accessory": "Switcheroo",
     "type": "multiswitch",
     "name": "My HDMI Switcher",
+    "serialNumber": "MULTISW01",
     "host": "http://192.168.0.10X:8080",   // don't forget to specify a port, if necessary
     "multiswitch": [
        { "name" : "Apple TV"     , "path" : "/switcher/appletv" },
@@ -60,6 +62,7 @@ Currently only built to support one http method per switch service, meaning, all
 | `send_immediately`     | option for request                                                                  |          |
 | `manufacturer`         | will show in Home app description of this Homekit accessory, ex. 'LG'               |          |
 | `model`                | will show in Home app description of this Homekit accessory, ex. 'HD 2000'          |          |
+| `serialNumber`         | will show in Home app description of this Homekit accessory, ex. 'SWITCH01'         |          |
 
 
 
@@ -73,9 +76,10 @@ Running `homebridge` manually will allow you to see the Switcheroo console logs.
 ## Tips
 
   - Run Homebridge on startup and have it restart if crashed, [read my notes](https://github.com/chriszelazo/Apartment-Homebridge-Setup#auto-restart-homebridge-after-a-crash)
-  - Make sure specify a port in the if necessary. (i.e. `"base_url" : "http://192.168.0.XXX:2000"`)
+  - Make sure specify a port in the if necessary. (i.e. `"host" : "http://192.168.0.XXX:2000"`)
   - Must prepend 'http://' to your host
   - Verify the correct `http_method` is begin used. Switcheroo defaults to `GET`
+  - Set a `serialNumber` to avoid errors in apps like "Controller for HomeKit".
 
 ## Installation
 Read about an example Raspberry Pi + Homebridge setup guide with this package [here](https://github.com/chriszelazo/Apartment-Homebridge-Setup)
